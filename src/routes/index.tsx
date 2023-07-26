@@ -1,16 +1,26 @@
 import { component$ } from "@builder.io/qwik";
 import { routeLoader$, type DocumentHead, routeAction$ } from "@builder.io/qwik-city";
+import { createServerClient } from "supabase-auth-helpers-qwik";
 import Form from "~/components/Form";
-
 import Todo from "~/components/Todo";
-import { supabase } from "~/lib/initSupabase";
 
-export const useTodos = routeLoader$(async () => {
+
+export const useTodos = routeLoader$(async (requestEv) => {
+  const supabase = createServerClient(
+    requestEv.env.get("SUPABASE_URL")!,
+    requestEv.env.get("SUPABASE_ANON_KEY")!,
+    requestEv
+  );
   // This code runs only on the server, after every navigation
   const { data } = await supabase.from('Todos').select('*')
   return data
 });
-export const useAddRemoveTodo = routeAction$(async (data) => {
+export const useAddRemoveTodo = routeAction$(async (data, requestEv) => {
+  const supabase = createServerClient(
+    requestEv.env.get("SUPABASE_URL")!,
+    requestEv.env.get("SUPABASE_ANON_KEY")!,
+    requestEv
+  );
   // This will only run on the server when the user submits the form (or when the action is called programmatically)
   if (data._action === 'create') {
     const todo = {

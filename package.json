@@ -42,6 +42,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.31.0",
-    "daisyui": "^3.5.0"
+    "daisyui": "^3.5.0",
+    "supabase-auth-helpers-qwik": "^0.0.3"
   }
 }
